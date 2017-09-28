@@ -39,8 +39,6 @@ class DateTime(Resource):
         conn = e.connect()
         time=str(datetime.datetime.now())
         time=time.split('.')
-        query = conn.execute("select * from attendance where Name='%s'"%student_name)
-        result = {'data': [dict(zip(tuple (query.keys()) ,i)) for i in query.cursor]}
         return time[0]
 
 api.add_resource(Students_Names, '/names/<string:student_name>')
