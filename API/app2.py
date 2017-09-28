@@ -5,21 +5,24 @@ from sqlalchemy import create_engine
 import datetime
 
 #e = create_engine('sqlite:///attendance.db')
-e = create_engine('mysql+mysqldb://username:password@localhost:3306/mydb',echo=False, pool_recycle=3600)
+e = create_engine('mysql+mysqldb://username:password@localhost:3306/attendance',echo=False, pool_recycle=3600)
 
+conn = e.connect()
+#query = conn.execute("create table TEST")
+#conn.execute("use attendance;")
 app = Flask(__name__)
 api = Api(app)
 
 class Students(Resource):
 	def get(self):
 		conn = e.connect()
-		query = conn.execute("select distinct Name from attendance")
+		query = conn.execute("select distinct Name from STUDENT")
 		return {'Names': [i[0] for i in query.cursor.fetchall()]}
 
 class Students_Names(Resource):
     def get(self, student_name):
         conn = e.connect()
-        query = conn.execute("select * from attendance where Name='%s'"%student_name)
+        query = conn.execute("select * from STUDENT where Name='%s'"%student_name)
         result = {'data': [dict(zip(tuple (query.keys()) ,i)) for i in query.cursor]}
         return result
 
@@ -27,7 +30,7 @@ class MarkAttendance(Resource):
     def get(self, student_names):
         conn = e.connect()
         students = student_names.split(',')
-        query = conn.execute("select * from attendance where Name='%s'"%student_name)
+        query = conn.execute("select * from STUDENT where Name='%s'"%student_names)
         result = {'data': [dict(zip(tuple (query.keys()) ,i)) for i in query.cursor]}
         return students
 
