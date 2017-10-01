@@ -4,6 +4,7 @@ from flask_restful import Resource, Api
 from sqlalchemy import create_engine
 import datetime
 #e = create_engine('sqlite:///attendance.db')
+
 e = create_engine('mysql+mysqldb://username:password@localhost:3306/attendance',echo=False, pool_recycle=3600)
 
 #conn = e.connect()
